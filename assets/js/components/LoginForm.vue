@@ -38,14 +38,18 @@
       handleSubmit() {
         this.isLoading = true;
         this.error = '';
-        
+
         axios
           .post('/login', {
             email: this.email,
             password: this.password
           })
           .then(response => {
-            console.log(response.data);
+            if(error.response.data){
+              this.error = error.response.data.error;
+            } else {
+              this.error = "Unknown error";
+            };
 
             //this.$emit('user-authenticated', userUri);
             //this.email = '';
