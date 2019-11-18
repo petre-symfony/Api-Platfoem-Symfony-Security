@@ -43,19 +43,23 @@
           .post('/login', {
             email: this.email,
             password: this.password
+          }, {
+	          headers: {
+                'content-type': 'application/x-www-form-urlencoded'
+	          }
           })
           .then(response => {
-            if(error.response.data){
-              this.error = error.response.data.error;
-            } else {
-              this.error = "Unknown error";
-            };
+            console.log(response.data);
 
             //this.$emit('user-authenticated', userUri);
             //this.email = '';
             //this.password = '';
           }).catch(error => {
-            console.log(error.response.data);
+	        if(error.response.data){
+              this.error = error.response.data.error;
+	        } else {
+              this.error = "Unknown error";
+	        };
           }).finally(() => {
             this.isLoading = false;
           })
