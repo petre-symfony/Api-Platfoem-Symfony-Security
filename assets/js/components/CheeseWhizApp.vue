@@ -57,6 +57,10 @@ import loginForm from './LoginForm';
       return {
         user: null
       }
+    }, mounted() {
+      if (window.user) {
+        this.user = window.user;
+      }
     }
   }
 </script>
