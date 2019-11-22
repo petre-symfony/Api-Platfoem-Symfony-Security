@@ -48,5 +48,13 @@ class CheeseListingResourceTest extends CustomApiTestCase {
 			'json' => ['title' => 'updated']
 		]);
 		$this->assertResponseStatusCodeSame(403);
+
+		var_dump($client->getResponse()->getContent(false));
+
+		$this->logIn($client, 'user1@example.com', 'foo');
+		$client->request('PUT', '/api/cheeses/'.$cheeseListing->getId(), [
+			'json' => ['title' => 'updated']
+		]);
+		$this->assertResponseStatusCodeSame(200);
 	}
 }
