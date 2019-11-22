@@ -5,13 +5,14 @@ namespace App\Security\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\CheeseListing;
 
 class CheeseListingVoter extends Voter {
   protected function supports($attribute, $subject) {
     // replace with your own logic
     // https://symfony.com/doc/current/security/voters.html
-    return in_array($attribute, ['POST_EDIT', 'POST_VIEW'])
-      && $subject instanceof \App\Entity\BlogPost;
+    return in_array($attribute, ['EDIT'])
+      && $subject instanceof CheeseListing;
   }
 
   protected function voteOnAttribute($attribute, $subject, TokenInterface $token) {
