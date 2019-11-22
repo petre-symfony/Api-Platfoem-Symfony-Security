@@ -31,18 +31,22 @@ class CheeseListingResourceTest extends CustomApiTestCase {
 
 	public function testUpdateCheeseListing(){
 		$client = self::createClient();
-		$user = $this->createUser('cheeseList@example.com', 'foo');
+		$user1 = $this->createUser('user1@example.com', 'foo');
+		$user2 = $this->createUser('user2@example.com', 'foo');
+
 		$cheeseListing = new CheeseListing('Block of cheedar');
-		$cheeseListing->setOwner($user);
+		$cheeseListing->setOwner($user1);
 		$cheeseListing->setPrice(1000);
 		$cheeseListing->setDescription('hmmm');
+
 		$em = $this->getEntityManager();
 		$em->persist($cheeseListing);
 		$em->flush();
-		$this->logIn($client, 'cheeseList@example.com', 'foo');
+
+		$this->logIn($client, 'user2@example.com', 'foo');
 		$client->request('PUT', '/api/cheeses/'.$cheeseListing->getId(), [
 			'json' => ['title' => 'updated']
 		]);
-		$this->assertResponseStatusCodeSame(200);
+		$this->assertResponseStatusCodeSame(403);
 	}
 }
