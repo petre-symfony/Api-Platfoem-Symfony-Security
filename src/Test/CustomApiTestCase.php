@@ -42,4 +42,8 @@ class CustomApiTestCase extends ApiTestCase{
 		$this->logIn($client, $email, $password);
 		return $user;
 	}
+
+	protected function getEntityManager():EntityManagerInterface{
+		return self::$container->get(EntityManagerInterface::class);
+	}
 }
