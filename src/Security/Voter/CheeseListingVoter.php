@@ -4,10 +4,20 @@ namespace App\Security\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\CheeseListing;
 
 class CheeseListingVoter extends Voter {
+	/**
+	 * @var Security
+	 */
+	private $security;
+
+	public function __construct(Security $security) {
+		$this->security = $security;
+	}
+
   protected function supports($attribute, $subject) {
     // replace with your own logic
     // https://symfony.com/doc/current/security/voters.html
@@ -21,7 +31,7 @@ class CheeseListingVoter extends Voter {
     if (!$user instanceof UserInterface) {
       return false;
     }
-    
+
 		/** @var CheeseListing $subject */
     // ... (check conditions and return true to grant permission) ...
     switch ($attribute) {
@@ -29,6 +39,11 @@ class CheeseListingVoter extends Voter {
 				if ($subject->getOwner() === $user){
 					return true;
 				}
+
+				if ($this->security->isGranted('ROLE_ADMIN')){
+					return true;
+				}
+				
 				return false;
     }
 
