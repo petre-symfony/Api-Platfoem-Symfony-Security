@@ -58,7 +58,7 @@ class User implements UserInterface {
 	/**
 	 * @Groups({"user:write"})
 	 * @SerializedName("password")
-	 * @Assert\NotBlank()
+	 * @Assert\NotBlank(groups={"create"})
 	 */
 	private $plainPassword;
 
