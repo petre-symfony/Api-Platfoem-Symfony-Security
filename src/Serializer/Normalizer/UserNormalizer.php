@@ -2,6 +2,7 @@
 
 namespace App\Serializer\Normalizer;
 
+use App\Entity\User;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -13,8 +14,15 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     $this->normalizer = $normalizer;
   }
 
-  public function normalize($object, $format = null, array $context = array()): array {
-    $data = $this->normalizer->normalize($object, $format, $context);
+	/**
+	 * @param User $object
+	 */
+	public function normalize($object, $format = null, array $context = array()): array {
+		if ($this->userIsOwner($object)){
+			$context['groups'][] = 'owner:read';
+		}
+
+		$data = $this->normalizer->normalize($object, $format, $context);
 
     // Here: add, edit, or delete some data
 
@@ -22,10 +30,14 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
   }
 
   public function supportsNormalization($data, $format = null): bool {
-    return $data instanceof \App\Entity\BlogPost;
+    return $data instanceof User;
   }
 
   public function hasCacheableSupportsMethod(): bool {
     return true;
   }
+
+	private function userIsOwner(User $user):bool{
+		return rand(0, 10)>5;
+	}
 }
