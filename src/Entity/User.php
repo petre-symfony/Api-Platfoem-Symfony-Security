@@ -55,9 +55,13 @@ class User implements UserInterface {
 	private $roles = [];
 
 	/**
+	 * @Groups({"user:write"})
+	 */
+	private $plainPassword;
+
+	/**
 	 * @var string The hashed password
 	 * @ORM\Column(type="string")
-	 * @Groups({"user:write"})
 	 */
 	private $password;
 
@@ -144,7 +148,7 @@ class User implements UserInterface {
 	 */
 	public function eraseCredentials() {
 		// If you store any temporary, sensitive data on the user, clear it here
-		// $this->plainPassword = null;
+		$this->plainPassword = null;
 	}
 
 	public function setUsername(string $username): self {
@@ -178,6 +182,20 @@ class User implements UserInterface {
 			}
 		}
 
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPlainPassword():?string {
+		return $this->plainPassword;
+	}
+	/**
+	 * @param mixed $plainPassword
+	 */
+	public function setPlainPassword(string $plainPassword): self {
+		$this->plainPassword = $plainPassword;
 		return $this;
 	}
 }
