@@ -54,7 +54,7 @@ class AutoGroupResourceMetadataFactory implements ResourceMetadataFactoryInterfa
 		}
 		return $operations;
 	}
-	
+
 	private function getDefaultGroups(string $shortName, bool $normalization, bool $isItem, string $operationName) {
 		$shortName = strtolower($shortName);
 		$readOrWrite = $normalization ? 'read' : 'write';
