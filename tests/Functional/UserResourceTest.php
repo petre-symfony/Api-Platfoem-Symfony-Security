@@ -60,5 +60,10 @@ class UserResourceTest extends CustomApiTestCase {
 		$user->setRoles(['ROLE_ADMIN']);
 		$em->flush();
 		$this->logIn($client, 'user@example.com', 'foo');
+
+		$client->request("GET", "/api/users/".$user->getId());
+		$this->assertJsonContains([
+			'phoneNumber' => '555.123.4567'
+		]);
 	}
 }
