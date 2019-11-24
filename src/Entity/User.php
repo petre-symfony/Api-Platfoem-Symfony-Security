@@ -81,7 +81,7 @@ class User implements UserInterface {
 
 	/**
 	 * @ORM\OneToMany(targetEntity="App\Entity\CheeseListing", mappedBy="owner", cascade={"persist"}, orphanRemoval=true)
-	 * @Groups({"user:read", "user:write"})
+	 * @Groups({"user:write"})
 	 * @Assert\Valid()
 	 */
 	private $cheeseListings;
@@ -177,6 +177,17 @@ class User implements UserInterface {
 		return $this->cheeseListings;
 	}
 
+	/**
+	 * @return Collection|CheeseListing[]
+	 * @Groups({"user:read"})
+	 * @SerializedName("cheeseListings")
+	 */
+	public function getPublishedCheeseListings(): Collection {
+		return $this->cheeseListings->filter(function (CheeseListing $cheeseListing){
+			return $cheeseListing->getIsPublished();
+		});
+	}
+	
 	public function addCheeseListing(CheeseListing $cheeseListing): self {
 		if (!$this->cheeseListings->contains($cheeseListing)) {
 			$this->cheeseListings[] = $cheeseListing;
