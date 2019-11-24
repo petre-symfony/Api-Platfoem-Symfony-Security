@@ -44,7 +44,7 @@ class CheeseListingResourceTest extends CustomApiTestCase {
 		$client->request('POST', '/api/cheeses', [
 			'json' => $cheeseData + ['owner' => '/api/users/'.$authenticatedUser->getId()]
 		]);
-		
+
 		$this->assertResponseStatusCodeSame(201);
 	}
 
