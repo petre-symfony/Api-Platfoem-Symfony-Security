@@ -36,7 +36,7 @@ class UserNormalizer implements ContextAwareNormalizerInterface, CacheableSuppor
 
     // Here: add, edit, or delete some data
 		$data['isMe'] = $isOwner;
-		
+
     return $data;
   }
 
