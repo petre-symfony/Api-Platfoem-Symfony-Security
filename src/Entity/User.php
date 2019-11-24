@@ -187,7 +187,7 @@ class User implements UserInterface {
 			return $cheeseListing->getIsPublished();
 		});
 	}
-	
+
 	public function addCheeseListing(CheeseListing $cheeseListing): self {
 		if (!$this->cheeseListings->contains($cheeseListing)) {
 			$this->cheeseListings[] = $cheeseListing;
