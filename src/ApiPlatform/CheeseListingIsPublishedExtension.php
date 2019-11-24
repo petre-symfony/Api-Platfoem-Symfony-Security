@@ -5,12 +5,13 @@ namespace App\ApiPlatform;
 
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\CheeseListing;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
-class CheeseListingIsPublishedExtension implements QueryCollectionExtensionInterface {
+class CheeseListingIsPublishedExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface {
 	/**
 	 * @var Security
 	 */
@@ -21,14 +22,20 @@ class CheeseListingIsPublishedExtension implements QueryCollectionExtensionInter
 	}
 
 	public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null){
+		$this->addWhere($queryBuilder, $resourceClass);
+	}
+
+	public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, string $operationName = null, array $context = []){
+		$this->addWhere($queryBuilder, $resourceClass);
+	}
+
+	private function addWhere(QueryBuilder $queryBuilder,string $resourceClass){
 		if($resourceClass !== CheeseListing::class){
 			return;
 		}
-
 		if($this->security->isGranted('ROLE_ADMIN')){
 			return;
 		}
-
 		$rootAlias = $queryBuilder->getRootAlias()[0];
 		$queryBuilder->andWhere(sprintf('%s.isPublished = :isPublished', $rootAlias))
 			->setParameter('isPublished', true);

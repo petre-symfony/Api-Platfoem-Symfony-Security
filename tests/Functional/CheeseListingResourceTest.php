@@ -121,7 +121,7 @@ class CheeseListingResourceTest extends CustomApiTestCase {
 		$em = $this->getEntityManager();
 		$em->persist($cheeseListing1);
 		$em->flush();
-		
+
 		$client->request('GET', '/api/cheeses/'.$cheeseListing1->getId());
 		$this->assertResponseStatusCodeSame(404);
 	}
