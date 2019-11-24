@@ -26,7 +26,7 @@ class IsValidOwnerValidator extends ConstraintValidator{
 
 		// TODO: implement the validation here
 		$user = $this->security->getUser();
-		
+
 		if(!$user instanceof User){
 			$this->context->buildViolation($constraint->anonymousMessage)
 				->addViolation();
