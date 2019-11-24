@@ -13,4 +13,6 @@ class IsValidOwner extends Constraint{
 	 * Then, use these in your validator class.
 	 */
 	public $message = 'Cannot set user to  a different user';
+
+	public $anonymousMessage = 'Cannot set owner unless you areauthenticated';
 }
